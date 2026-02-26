@@ -79,11 +79,13 @@ export default function HomeScreen() {
       </View>
     );
   }
-
   return (
     <>  
       <AlertsButton />
       <View style={styles.container}>
+        {vehicles === null && (
+          <Text style={styles.warn}>No data available</Text>
+        )}
         <MapView
           style={styles.map}
           provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
@@ -124,5 +126,11 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  warn: {
+    fontSize: 18,
+    color: "red",
+    padding: 10,
+    borderRadius: 5,
   },
 });
