@@ -17,6 +17,7 @@ export default function HomeScreen() {
 
     const updatedBuses = vehicles.map(vehicle => {
       const id = `bus${vehicle.VehicleID}`;
+      const routeId = vehicle.RouteID;
 
       // If we don't have a marker for this bus yet, create one. Otherwise, animate it to the new position.
       
@@ -39,6 +40,7 @@ export default function HomeScreen() {
       }
       return {
         id,
+        routeId,
         coordinate: {
           latitude: vehicle.Latitude,
           longitude: vehicle.Longitude,
@@ -103,7 +105,6 @@ export default function HomeScreen() {
             <MarkerAnimated
               key={bus.id}
               coordinate={busCoordsRef.current[bus.id] || bus.coordinate}
-              rotation={bus.heading}
               image={markerImg}
             />
           ))}
