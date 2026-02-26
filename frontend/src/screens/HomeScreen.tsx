@@ -48,7 +48,7 @@ export default function HomeScreen() {
           longitude: vehicle.Longitude,
           latitudeDelta: 0,
           longitudeDelta: 0,
-          duration: 1000,
+          duration: 500,
           useNativeDriver: false,
         }).start();
       }
@@ -68,7 +68,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const interval = setInterval(() => {
       refresh();
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, [refresh]);
 
