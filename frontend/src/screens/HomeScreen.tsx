@@ -1,17 +1,30 @@
 import React, { useRef, useState, useEffect } from "react";
 import { View, StyleSheet, Text, Platform } from "react-native";
-import MapView, { PROVIDER_GOOGLE, AnimatedRegion, MarkerAnimated } from "react-native-maps";
-import { useLocation, getBeavBusVehiclePositions} from "@/src/hooks";
+import MapView, { PROVIDER_GOOGLE, AnimatedRegion, MarkerAnimated, Polyline } from "react-native-maps";
+import { useLocation, getBeavBusVehiclePositions, getBeavBusRoutes} from "@/src/hooks";
 import AlertsButton from "../components/AlertsButton";
 
 export default function HomeScreen() {
   const { location, loading, error } = useLocation();
   const { vehicles, refresh } = getBeavBusVehiclePositions();
+  const { routes } = getBeavBusRoutes();
   const [buses, setBuses] = useState<any[]>([]);
   const busCoordsRef = useRef<Record<string, any>>({});
-  const route49 = require('../assets/images/blue.png');
-  const route55 = require('../assets/images/red.png');
-  const route54 = require('../assets/images/green.png');
+
+  // Icon for each route
+  const route54 = require('../assets/images/blue.png');
+  const route49 = require('../assets/images/yellow.png');
+  const route55 = require('../assets/images/green.png');
+
+  //Update routes
+  const drawableRoutes = (routes ?? [])
+  .map((route, index) => ({
+    key: `${route.Description}-${index}`,
+    color: route.MapLineColor || "#000000",
+    coordinates: route.linePoints || [],
+  }))
+  .filter((r) => r.coordinates.length > 1);
+
   // Update bus coordinates
   useEffect(() => {
     if (!vehicles) return;
@@ -107,6 +120,14 @@ export default function HomeScreen() {
               key={bus.id}
               coordinate={busCoordsRef.current[bus.id] || bus.coordinate}
               image={bus.routeId === 49 ? route49 : bus.routeId === 55 ? route55 : route54}
+            />
+          ))}
+          {drawableRoutes.map((route) => (
+            <Polyline
+              key={route.key}
+              coordinates={route.coordinates}
+              strokeColor={route.color}
+              strokeWidth={4}
             />
           ))}
         </MapView>
