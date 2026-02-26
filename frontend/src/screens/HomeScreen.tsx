@@ -10,13 +10,15 @@ export default function HomeScreen() {
   const [buses, setBuses] = useState<any[]>([]);
   const busCoordsRef = useRef<Record<string, any>>({});
   const markerImg = require('../assets/images/bus.png');
-  // Initialize bus positions when location is available
 
+  // Update bus coordinates
   useEffect(() => {
     if (!vehicles) return;
 
     const updatedBuses = vehicles.map(vehicle => {
       const id = `bus${vehicle.VehicleID}`;
+
+      // If we don't have a marker for this bus yet, create one. Otherwise, animate it to the new position.
       
       if (!busCoordsRef.current[id]) {
         busCoordsRef.current[id] = new AnimatedRegion({
@@ -35,7 +37,6 @@ export default function HomeScreen() {
           useNativeDriver: false,
         }).start();
       }
-
       return {
         id,
         coordinate: {
@@ -44,19 +45,14 @@ export default function HomeScreen() {
         },
       };
     });
-
     setBuses(updatedBuses);
-
   }, [vehicles]);
 
-
-  // Simulate bus movement every second (for test purposes)
-
+  // Refresh bus positions every second
   useEffect(() => {
     const interval = setInterval(() => {
-      refresh(); // fetch new vehicle data
+      refresh();
     }, 1000);
-
     return () => clearInterval(interval);
   }, [refresh]);
 
