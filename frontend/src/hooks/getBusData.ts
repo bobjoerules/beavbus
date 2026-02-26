@@ -98,7 +98,7 @@ export function getBeavBusVehiclePositions(): BeavBusVehiclePositionsResult {
             setError(null);
 
             const res = await fetch(
-                `${BASE_URL}/Services/JSONPRelay.svc/GetMapVehiclePoints?apiKey=${process.env.BEAV_BUS_API_KEY}`
+                `${BASE_URL}/Services/JSONPRelay.svc/GetMapVehiclePoints?apiKey=${process.env.EXPO_PUBLIC_BEAV_BUS_API_KEY}`
             );
 
             const data: Vehicle[] = await res.json();

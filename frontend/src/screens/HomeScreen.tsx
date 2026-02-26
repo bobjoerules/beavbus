@@ -9,8 +9,9 @@ export default function HomeScreen() {
   const { vehicles, refresh } = getBeavBusVehiclePositions();
   const [buses, setBuses] = useState<any[]>([]);
   const busCoordsRef = useRef<Record<string, any>>({});
-  const markerImg = require('../assets/images/bus.png');
-
+  const route49 = require('../assets/images/blue.png');
+  const route55 = require('../assets/images/red.png');
+  const route54 = require('../assets/images/green.png');
   // Update bus coordinates
   useEffect(() => {
     if (!vehicles) return;
@@ -86,7 +87,7 @@ export default function HomeScreen() {
       <AlertsButton />
       <View style={styles.container}>
         {vehicles === null && (
-          <Text style={styles.warn}>No data available</Text>
+          <Text style={styles.warn}>No bus data available</Text>
         )}
         <MapView
           style={styles.map}
@@ -105,7 +106,7 @@ export default function HomeScreen() {
             <MarkerAnimated
               key={bus.id}
               coordinate={busCoordsRef.current[bus.id] || bus.coordinate}
-              image={markerImg}
+              image={bus.routeId === 49 ? route49 : bus.routeId === 55 ? route55 : route54}
             />
           ))}
         </MapView>
