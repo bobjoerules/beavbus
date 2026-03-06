@@ -6,13 +6,6 @@ import AlertsButton from "../components/AlertsButton";
 import ThemedView from "../components/ThemedView";
 import ThemedText from "../components/ThemedText";
 
-//Temp mocked stops until we utilize API data
-const mockStops = [
-  { id: "1", latitude: 44.5650, longitude: -123.2780 },
-  { id: "2", latitude: 44.5635, longitude: -123.2755 },
-  { id: "3", latitude: 44.5620, longitude: -123.2730 },
-];
-
 
 export default function HomeScreen() {
   const { location, loading, error } = useLocation();
@@ -34,6 +27,19 @@ export default function HomeScreen() {
     coordinates: route.linePoints || [],
   }))
   .filter((r) => r.coordinates.length > 1);
+
+  const stops = Array.from(
+    new Map(
+      (routes ?? [])
+        .flatMap((route) =>
+          (route.Stops || []).map((stop) => ({
+            ...stop,
+            markerColor: route.MapLineColor || "",
+          }))
+        )
+        .map((stop) => [stop.RouteStopID, stop])
+    ).values()
+  );
 
   // Update bus coordinates
   useEffect(() => {
@@ -125,13 +131,6 @@ export default function HomeScreen() {
           showsMyLocationButton={true}
           showsTraffic={true}
         >
-          {buses.map((bus) => (
-            <MarkerAnimated
-              key={bus.id}
-              coordinate={busCoordsRef.current[bus.id] || bus.coordinate}
-              image={bus.routeId === 49 ? route49 : bus.routeId === 55 ? route55 : route54}
-            />
-          ))}
           {drawableRoutes.map((route) => (
             <Polyline
               key={route.key}
@@ -140,25 +139,34 @@ export default function HomeScreen() {
               strokeWidth={4}
             />
           ))}
-          {mockStops.map((stop) => (
+          {stops.map((stop) => (
           <Marker
-            key={stop.id}
+            key={stop.RouteStopID}
             coordinate={{
-              latitude: stop.latitude,
-              longitude: stop.longitude,
+              latitude: stop.Latitude,
+              longitude: stop.Longitude,
             }}
+            zIndex={1}
           >
           <ThemedView
              style={{
               width: 16,
               height: 16,
               borderRadius: 8,
-              backgroundColor: "rgb(219, 104, 10)",
+              backgroundColor: stop.markerColor || "rgb(219, 104, 10)",
               borderWidth: 1.5,
               borderColor: "black",
               }}
             />
           </Marker>
+          ))}
+          {buses.map((bus) => (
+            <MarkerAnimated
+              key={bus.id}
+              coordinate={busCoordsRef.current[bus.id] || bus.coordinate}
+              image={bus.routeId === 49 ? route49 : bus.routeId === 55 ? route55 : route54}
+              zIndex={10}
+            />
           ))}
         </MapView>
       </View>
