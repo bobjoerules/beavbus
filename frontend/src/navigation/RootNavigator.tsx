@@ -1,17 +1,16 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeBottomTabNavigator } from "@bottom-tabs/react-navigation";
 import { RootBottomTabParamList } from "./types";
 import HomeScreen from "../screens/HomeScreen";
 import { TopBar } from "../components";
 import SettingsScreen from "../screens/SettingsScreen";
 
-const Tab = createBottomTabNavigator<RootBottomTabParamList>();
+const Tab = createNativeBottomTabNavigator<RootBottomTabParamList>();
 
 export default function RootNavigator() {
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={{
-        lazy: false,
         header: () => <TopBar />,
       }}
     >
