@@ -3,6 +3,7 @@ import "dotenv/config";
 export default {
   expo: {
     name: "BeavBus",
+    owner: "bobjoerules",
     slug: "beavbus",
     version: "1.0.0",
     orientation: "portrait",
@@ -11,14 +12,14 @@ export default {
     newArchEnabled: true,
     icon: "./src/assets/images/logo.png",
     extra: {
-      eas: {
-        projectId: "fcd4fcbc-0b39-4c77-ad44-f9df780ac06f",
+      "eas": {
+        "projectId": "435cb36c-2a12-4e0d-a37b-5a51dd5f55cb"
       },
       maptilerApiKey: process.env.MAPTILER_API_KEY,
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.beavbus.app",
+      bundleIdentifier: "com.beavbus.application",
       config: {
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
         maptilerApiKey: process.env.MAPTILER_API_KEY,
@@ -35,7 +36,7 @@ export default {
       },
     },
     android: {
-      package: "com.beavbus.app",
+      package: "com.beavbus.application",
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
       config: {
@@ -49,6 +50,9 @@ export default {
     },
     plugins: [
       "expo-router",
+      "expo-splash-screen",
+      "expo-status-bar",
+      "expo-notifications",
       [
         "react-native-maps",
         {

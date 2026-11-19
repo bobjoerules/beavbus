@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import NotificationApp from "../notifications/notification";
 import SettingsScreen from "../screens/SettingsScreen";
 
 export default function SettingsRoute() {
@@ -7,6 +8,7 @@ export default function SettingsRoute() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <SettingsScreen />
+      <NotificationApp />
     </View>
   );
 }
